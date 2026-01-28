@@ -1,206 +1,193 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Générateur d’items FiveM</title>
+  <meta charset="UTF-8" />
+  <title>Générateur d’items FiveM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-}
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      font-family: Arial, sans-serif;
+      color: white;
+    }
 
-body {
-  background: radial-gradient(circle at top, #1f2636, #0b0e14);
-  height: 100vh;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-}
+    .card {
+      width: 420px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 18px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
 
-/* ===== BOUTONS ===== */
-.btn {
-  width: 100%;
-  padding: 15px;
-  border-radius: 14px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
-  background: linear-gradient(135deg, #4aa3ff, #2f7bff);
-  box-shadow: 0 12px 30px rgba(47,123,255,.35);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: url("logo.png") center / cover no-repeat;
+      border: 4px solid rgba(255,255,255,0.1);
+    }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(47,123,255,.5);
-}
+    h1 {
+      margin: 10px 0;
+      font-size: 22px;
+    }
 
-.btn:active {
-  transform: scale(.97);
-}
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
 
-/* ===== ACCUEIL ===== */
-#welcome {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at top, #1f2636, #0b0e14);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
+    label {
+      display: block;
+      text-align: left;
+      font-size: 13px;
+      margin-bottom: 6px;
+      opacity: 0.9;
+    }
 
-.welcome-card {
-  width: 520px;
-  padding: 36px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, #171c29, #121622);
-  box-shadow: 0 30px 90px rgba(0,0,0,.75);
-  text-align: center;
-}
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      background: #020617;
+      color: white;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
 
-.welcome-card h1 {
-  margin-bottom: 12px;
-}
+    .hint {
+      font-size: 11px;
+      opacity: 0.6;
+      text-align: left;
+      margin-bottom: 16px;
+    }
 
-.welcome-card p {
-  color: #b7c0da;
-  font-size: 14px;
-  line-height: 1.7;
-  margin-bottom: 26px;
-}
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
 
-/* ===== GENERATEUR ===== */
-.card {
-  width: 460px;
-  padding: 32px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, #171c29, #121622);
-  box-shadow: 0 25px 80px rgba(0,0,0,.7);
-  text-align: center;
-}
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
 
-.avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  border: 4px solid #2b3347;
-  margin-bottom: 14px;
-}
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-.subtitle {
-  color: #9aa4bf;
-  font-size: 13px;
-  margin-bottom: 26px;
-}
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(59,130,246,0.4);
+    }
 
-.field {
-  text-align: left;
-  margin-bottom: 18px;
-}
+    #result {
+      margin-top: 18px;
+    }
 
-.label {
-  font-size: 13px;
-  color: #c6cde5;
-  margin-bottom: 8px;
-  display: block;
-}
+    #result img {
+      max-width: 200px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
 
-input[type="text"] {
-  width: 100%;
-  padding: 15px 16px;
-  border-radius: 14px;
-  border: 1px solid #2b3347;
-  background: #0f1322;
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-}
-
-.hint {
-  font-size: 11px;
-  color: #7f89a8;
-  margin-top: 6px;
-}
-
-/* ===== CHECKBOX PRO ===== */
-.option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 22px 0;
-}
-
-.option input {
-  width: 18px;
-  height: 18px;
-  accent-color: #4aa3ff;
-}
-
-.status {
-  margin-top: 16px;
-  font-size: 13px;
-}
-
-.error {
-  color: #ff6b6b;
-}
-</style>
+    #error {
+      margin-top: 14px;
+      color: #f87171;
+      font-size: 13px;
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- ACCUEIL -->
-<div id="welcome">
-  <div class="welcome-card">
-    <h1>Bienvenue</h1>
-    <p>
-      Ce générateur permet de créer des icônes d’items FiveM.<br><br>
-      Merci de <strong>ne pas abuser de la génération</strong> et
-      d’être <strong>précis dans vos descriptions</strong>
-      afin d’obtenir un rendu optimal.
-    </p>
-    <button class="btn" onclick="enterSite()">Accéder au générateur</button>
-  </div>
-</div>
+  <div class="card">
+    <div class="avatar"></div>
 
-<!-- GENERATEUR -->
-<div class="card">
-  <img src="/logo.png" class="avatar">
-  <h2>Générateur d’items FiveM</h2>
-  <div class="subtitle">Icônes réalistes prêtes à l’emploi</div>
+    <h1>Générateur d’items FiveM</h1>
+    <div class="subtitle">Icônes réalistes prêtes à l’emploi</div>
 
-  <div class="field">
-    <label class="label">Description de l’item</label>
-    <input type="text" id="prompt"
-      placeholder="Ex : fourchette en or, clé USB, bouteille d’eau">
+    <label>Description de l’item</label>
+    <input
+      id="prompt"
+      type="text"
+      placeholder="Ex : fourchette en or, clé USB, bouteille d’eau"
+    />
     <div class="hint">Soyez précis pour un meilleur résultat</div>
+
+    <div class="row">
+      <div class="checkbox">
+        <input type="checkbox" id="transparent" checked />
+        <span>Fond transparent</span>
+      </div>
+    </div>
+
+    <button onclick="generate()">Générer</button>
+
+    <div id="error">Le générateur est hors ligne contactez Atsar</div>
+
+    <div id="result"></div>
   </div>
 
-  <div class="option">
-    <input type="checkbox" id="transparent" checked>
-    <label for="transparent">Fond transparent</label>
-  </div>
+  <script>
+    async function generate() {
+      const errorEl = document.getElementById("error");
+      const resultEl = document.getElementById("result");
+      const prompt = document.getElementById("prompt").value;
 
-  <button class="btn" onclick="generate()">Générer</button>
+      errorEl.style.display = "none";
+      resultEl.innerHTML = "";
 
-  <div id="status" class="status error">Erreur génération</div>
-</div>
+      if (!prompt.trim()) return;
 
-<script>
-function enterSite() {
-  document.getElementById("welcome").style.display = "none";
-}
+      try {
+        const res = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt,
+            transparent: document.getElementById("transparent").checked
+          })
+        });
 
-function generate() {
-  // L’IA sera branchée plus tard
-}
-</script>
+        if (!res.ok) throw new Error("offline");
+
+        const data = await res.json();
+
+        if (!data.image) throw new Error("offline");
+
+        resultEl.innerHTML = `<img src="${data.image}" />`;
+
+      } catch (e) {
+        errorEl.style.display = "block";
+      }
+    }
+  </script>
 
 </body>
 </html>
