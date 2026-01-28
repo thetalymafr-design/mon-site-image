@@ -23,7 +23,7 @@ app.post("/generate", async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-image-1",
-        prompt,
+        prompt: prompt,
         size: "512x512",
         background: transparent ? "transparent" : "white"
       })
@@ -31,8 +31,14 @@ app.post("/generate", async (req, res) => {
 
     const data = await response.json();
 
-    if (!data.data || !data.data[0].b64_json) {
-      return res.status(500).json({ error: "No image returned" });
+    // 🔴 LOG IMPORTANT
+    console.log("OPENAI RESPONSE:", data);
+
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
+      return res.status(500).json({
+        error: "OpenAI error",
+        details: data
+      });
     }
 
     res.json({
@@ -40,8 +46,8 @@ app.post("/generate", async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "generation failed" });
+    console.error("SERVER ERROR:", err);
+    res.status(500).json({ error: "server crash" });
   }
 });
 
