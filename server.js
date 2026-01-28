@@ -4,7 +4,7 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
@@ -25,20 +25,16 @@ app.post("/generate", async (req, res) => {
         model: "gpt-image-1",
         prompt: prompt,
         size: "512x512",
-        background: transparent ? "transparent" : "white"
+        background: transparent ? "transparent" : "white",
+        response_format: "b64_json"   // 🔥 LA CLÉ DU PROBLÈME
       })
     });
 
     const data = await response.json();
 
-    // 🔴 LOG IMPORTANT
-    console.log("OPENAI RESPONSE:", data);
-
     if (!data.data || !data.data[0] || !data.data[0].b64_json) {
-      return res.status(500).json({
-        error: "OpenAI error",
-        details: data
-      });
+      console.error("OPENAI ERROR:", data);
+      return res.status(500).json({ error: "OpenAI did not return image" });
     }
 
     res.json({
@@ -47,7 +43,7 @@ app.post("/generate", async (req, res) => {
 
   } catch (err) {
     console.error("SERVER ERROR:", err);
-    res.status(500).json({ error: "server crash" });
+    res.status(500).json({ error: "generation failed" });
   }
 });
 
