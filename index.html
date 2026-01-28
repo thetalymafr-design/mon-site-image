@@ -21,7 +21,6 @@
       border-radius:12px;
       width:420px;
       text-align:center;
-      box-shadow:0 0 20px rgba(0,0,0,.5);
     }
     img.logo {
       width:120px;
@@ -38,6 +37,10 @@
     input {
       background:#0f1115;
       color:#fff;
+    }
+    input::placeholder {
+      color:#ffffff;
+      opacity:0.7;
     }
     button {
       background:#3fa9f5;
@@ -60,7 +63,7 @@
 
   <input
     id="prompt"
-    placeholder="Notez l’item ici (ex : fourchette en or)"
+    placeholder="Notez l’item ici"
   >
 
   <button onclick="generateImage()">Générer</button>
