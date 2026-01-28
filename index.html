@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Générateur d’icônes FiveM</title>
+  <title>HurricaneItemAtsar</title>
 
   <style>
     body {
@@ -100,10 +100,9 @@
 <body>
 
   <div class="box">
-    <!-- LOGO -->
     <img src="logo.png" class="logo" alt="Logo">
 
-    <h1>Générateur d’icônes FiveM</h1>
+    <h1>HurricaneItemAtsar</h1>
 
     <input
       type="text"
@@ -120,7 +119,6 @@
 
     <button onclick="generate()">Générer</button>
 
-    <!-- IMAGE -->
     <div class="image-preview" id="imageBox" style="display:none;">
       <img id="generatedImage" src="">
       <div class="hint">Clic droit → Copier l’image</div>
@@ -148,9 +146,8 @@
           ", fond transparent, PNG, sans ombre, sans texte";
       }
 
-      // Simulation image (en attendant l'IA)
       document.getElementById("generatedImage").src =
-        "https://via.placeholder.com/256x256.png?text=ICON";
+        "https://via.placeholder.com/256x256.png?text=ITEM";
 
       document.getElementById("imageBox").style.display = "block";
 
