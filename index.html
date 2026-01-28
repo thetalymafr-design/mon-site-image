@@ -17,7 +17,6 @@ body {
   justify-content: center;
 }
 
-/* CARD */
 .card {
   width: 420px;
   background: rgba(15, 23, 42, 0.95);
@@ -27,7 +26,6 @@ body {
   box-shadow: 0 30px 80px rgba(0,0,0,0.6);
 }
 
-/* AVATAR */
 .avatar {
   width: 90px;
   height: 90px;
@@ -37,7 +35,6 @@ body {
   border: 4px solid rgba(255,255,255,0.15);
 }
 
-/* TEXT */
 h1 {
   font-size: 22px;
   margin-bottom: 8px;
@@ -49,7 +46,6 @@ h1 {
   margin-bottom: 25px;
 }
 
-/* INPUT */
 input[type="text"] {
   width: 100%;
   padding: 15px;
@@ -66,7 +62,6 @@ input::placeholder {
   color: #94a3b8;
 }
 
-/* CHECKBOX ALIGNÉ */
 .option {
   display: flex;
   align-items: center;
@@ -74,7 +69,6 @@ input::placeholder {
   gap: 10px;
   margin-bottom: 22px;
   font-size: 14px;
-  opacity: 0.9;
 }
 
 .option input {
@@ -83,7 +77,6 @@ input::placeholder {
   accent-color: #3b82f6;
 }
 
-/* BUTTON */
 button {
   width: 100%;
   padding: 15px;
@@ -97,20 +90,22 @@ button {
   transition: all 0.25s ease;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 18px 35px rgba(59,130,246,0.45);
 }
 
-/* OFFLINE MESSAGE */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .offline {
   margin-top: 18px;
   font-size: 13px;
   color: #f87171;
-  opacity: 0.9;
 }
 
-/* HIDE */
 .hidden {
   display: none;
 }
@@ -119,18 +114,18 @@ button:hover {
 
 <body>
 
-<!-- PAGE ACCUEIL -->
+<!-- ACCUEIL -->
 <div class="card" id="home">
   <div class="avatar"></div>
   <h1>Générateur d’items FiveM</h1>
   <p class="subtitle">
     Merci de ne pas abuser de la génération.<br>
-    Soyez précis dans vos descriptions pour un rendu optimal.
+    Soyez précis dans vos descriptions.
   </p>
   <button onclick="enterApp()">Accéder au générateur</button>
 </div>
 
-<!-- GÉNÉRATEUR -->
+<!-- APP -->
 <div class="card hidden" id="app">
   <div class="avatar"></div>
 
@@ -139,27 +134,39 @@ button:hover {
 
   <input
     type="text"
+    id="prompt"
     placeholder="Ex : fourchette en or, clé USB, bouteille d’eau"
-    disabled
   >
 
   <div class="option">
-    <input type="checkbox" checked disabled>
-    <label>Fond transparent</label>
+    <input type="checkbox" id="transparent" checked>
+    <label for="transparent">Fond transparent</label>
   </div>
 
-  <button disabled>Générer</button>
+  <button id="generateBtn">Générer</button>
 
-  <div class="offline">
+  <div class="offline hidden" id="offlineMsg">
     Le générateur est hors ligne, contactez Atsar
   </div>
 </div>
 
 <script>
+const GENERATOR_OFFLINE = true; // ← mets false quand l’API marche
+
 function enterApp() {
   document.getElementById("home").classList.add("hidden");
   document.getElementById("app").classList.remove("hidden");
+
+  if (GENERATOR_OFFLINE) {
+    document.getElementById("offlineMsg").classList.remove("hidden");
+    document.getElementById("generateBtn").disabled = true;
+  }
 }
+
+document.getElementById("generateBtn").addEventListener("click", () => {
+  if (GENERATOR_OFFLINE) return;
+  alert("Génération à venir 👀");
+});
 </script>
 
 </body>
