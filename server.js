@@ -1,10 +1,15 @@
 const express = require("express");
-const app = express();
+const path = require("path");
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Servir les fichiers statiques (HTML, CSS, JS, images)
+app.use(express.static(__dirname));
+
+// Page d’accueil → index.html
 app.get("/", (req, res) => {
-  res.send("✅ Serveur Node OK");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
