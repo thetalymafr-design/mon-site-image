@@ -7,25 +7,33 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      background: #1e1e1e;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
+      color: #eee;
     }
 
     .box {
-      background: white;
+      background: #2a2a2a;
       padding: 30px;
-      border-radius: 10px;
+      border-radius: 12px;
       width: 420px;
       text-align: center;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      width: 90px;
+      border-radius: 50%;
+      margin-bottom: 10px;
     }
 
     h1 {
       margin-bottom: 15px;
+      color: #6cc48a;
     }
 
     input[type="text"] {
@@ -33,6 +41,8 @@
       padding: 10px;
       margin-top: 10px;
       box-sizing: border-box;
+      border-radius: 5px;
+      border: none;
     }
 
     .option {
@@ -47,16 +57,42 @@
       width: 100%;
       cursor: pointer;
       font-size: 15px;
+      border: none;
+      border-radius: 5px;
+      background: #6cc48a;
+      color: #1e1e1e;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #5ab078;
     }
 
     #result {
       margin-top: 15px;
-      font-size: 13px;
-      color: #333;
+      font-size: 12px;
+      color: #ccc;
       white-space: pre-line;
-      background: #f9f9f9;
+    }
+
+    .image-preview {
+      margin-top: 15px;
+      background: #1e1e1e;
+      border-radius: 8px;
       padding: 10px;
-      border-radius: 5px;
+    }
+
+    .image-preview img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -64,7 +100,10 @@
 <body>
 
   <div class="box">
-    <h1>🖼️ Générateur d’icônes FiveM</h1>
+    <!-- LOGO -->
+    <img src="logo.png" class="logo" alt="Logo">
+
+    <h1>Générateur d’icônes FiveM</h1>
 
     <input
       type="text"
@@ -81,6 +120,12 @@
 
     <button onclick="generate()">Générer</button>
 
+    <!-- IMAGE -->
+    <div class="image-preview" id="imageBox" style="display:none;">
+      <img id="generatedImage" src="">
+      <div class="hint">Clic droit → Copier l’image</div>
+    </div>
+
     <div id="result"></div>
   </div>
 
@@ -96,15 +141,21 @@
 
       let finalPrompt =
         prompt +
-        ", objet réaliste, icône d'inventaire FiveM, objet unique, centré, vue de face, photographie produit, haute qualité";
+        ", objet réaliste, icône d'inventaire FiveM, centré, vue de face, photographie produit";
 
       if (noBg) {
         finalPrompt +=
-          ", fond transparent, PNG, sans ombre, sans texte, sans arrière-plan";
+          ", fond transparent, PNG, sans ombre, sans texte";
       }
 
+      // Simulation image (en attendant l'IA)
+      document.getElementById("generatedImage").src =
+        "https://via.placeholder.com/256x256.png?text=ICON";
+
+      document.getElementById("imageBox").style.display = "block";
+
       document.getElementById("result").innerText =
-        "Prompt FiveM envoyé à l’IA :\n\n" + finalPrompt;
+        "Prompt envoyé à l’IA :\n\n" + finalPrompt;
     }
   </script>
 
