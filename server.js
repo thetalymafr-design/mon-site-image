@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const fetch = require("node-fetch");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,5 +37,4 @@ app.post("/generate", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
-});
+  console.log("Server running on po
