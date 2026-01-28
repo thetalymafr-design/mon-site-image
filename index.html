@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Générateur d’images IA</title>
+  <title>Générateur d’icônes FiveM</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,76 +12,35 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
+
     .box {
       background: white;
       padding: 30px;
       border-radius: 10px;
-      width: 400px;
+      width: 420px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
     input[type="text"] {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
+      box-sizing: border-box;
     }
-    button {
-      margin-top: 15px;
-      padding: 10px;
-      width: 100%;
-      cursor: pointer;
-    }
+
     .option {
-      margin-top: 10px;
+      margin-top: 12px;
       text-align: left;
-    }
-    #result {
-      margin-top: 15px;
-      color: #333;
       font-size: 14px;
     }
-  </style>
-</head>
-<body>
 
-  <div class="box">
-    <h1>🖼️ Générateur d’images IA</h1>
-
-    <input type="text" id="prompt" placeholder="Décris ton item (ex: épée en or)">
-
-    <div class="option">
-      <label>
-        <input type="checkbox" id="noBackground">
-        Image sans fond (PNG)
-      </label>
-    </div>
-
-    <button onclick="generate()">Générer</button>
-
-    <div id="result"></div>
-  </div>
-
-  <script>
-    function generate() {
-      const prompt = document.getElementById("prompt").value;
-      const noBg = document.getElementById("noBackground").checked;
-
-      if (!prompt) {
-        alert("Merci de décrire un item 🙂");
-        return;
-      }
-
-      let finalPrompt = prompt;
-
-      if (noBg) {
-        finalPrompt += ", icône de jeu vidéo, fond transparent, PNG, sans ombre";
-      }
-
-      document.getElementById("result").innerText =
-        "Prompt envoyé à l’IA :\n" + finalPrompt;
-    }
-  </script>
-
-</body>
-</html>
+    button {
+      margin-top: 15px;
+      pa
