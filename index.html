@@ -1,193 +1,158 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Générateur d’items FiveM</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Générateur d’items FiveM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, #1e293b, #020617);
-      font-family: Arial, sans-serif;
-      color: white;
-    }
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1e293b, #020617);
+  font-family: Arial, sans-serif;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .card {
-      width: 420px;
-      background: rgba(15, 23, 42, 0.95);
-      border-radius: 18px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    }
+/* CARTES */
+.card {
+  width: 420px;
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 18px;
+  padding: 35px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
 
-    .avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      margin: 0 auto 15px;
-      background: url("logo.png") center / cover no-repeat;
-      border: 4px solid rgba(255,255,255,0.1);
-    }
+/* AVATAR */
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  background: url("logo.png") center / cover no-repeat;
+  border: 4px solid rgba(255,255,255,0.1);
+}
 
-    h1 {
-      margin: 10px 0;
-      font-size: 22px;
-    }
+/* TITRES */
+h1 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
 
-    .subtitle {
-      font-size: 13px;
-      opacity: 0.7;
-      margin-bottom: 20px;
-    }
+.subtitle {
+  font-size: 14px;
+  opacity: 0.75;
+  margin-bottom: 25px;
+}
 
-    label {
-      display: block;
-      text-align: left;
-      font-size: 13px;
-      margin-bottom: 6px;
-      opacity: 0.9;
-    }
+/* INPUT */
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: #020617;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
 
-    input[type="text"] {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      background: #020617;
-      color: white;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
+input::placeholder {
+  color: #94a3b8;
+}
 
-    .hint {
-      font-size: 11px;
-      opacity: 0.6;
-      text-align: left;
-      margin-bottom: 16px;
-    }
+/* CHECKBOX */
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+  font-size: 14px;
+}
 
-    .row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
+/* BOUTONS */
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-    }
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(59,130,246,0.45);
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+/* ERREUR */
+.error {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #f87171;
+}
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(59,130,246,0.4);
-    }
-
-    #result {
-      margin-top: 18px;
-    }
-
-    #result img {
-      max-width: 200px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
-
-    #error {
-      margin-top: 14px;
-      color: #f87171;
-      font-size: 13px;
-      display: none;
-    }
-  </style>
+/* HIDE */
+.hidden {
+  display: none;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="card">
-    <div class="avatar"></div>
+<!-- PAGE D'ACCUEIL -->
+<div class="card" id="home">
+  <div class="avatar"></div>
+  <h1>Générateur d’items FiveM</h1>
+  <p class="subtitle">
+    Merci de ne pas abuser de la génération.<br>
+    Soyez précis dans vos demandes pour un résultat optimal.
+  </p>
+  <button onclick="enterApp()">Accéder au générateur</button>
+</div>
 
-    <h1>Générateur d’items FiveM</h1>
-    <div class="subtitle">Icônes réalistes prêtes à l’emploi</div>
+<!-- GÉNÉRATEUR -->
+<div class="card hidden" id="app">
+  <div class="avatar"></div>
 
-    <label>Description de l’item</label>
-    <input
-      id="prompt"
-      type="text"
-      placeholder="Ex : fourchette en or, clé USB, bouteille d’eau"
-    />
-    <div class="hint">Soyez précis pour un meilleur résultat</div>
+  <h1>Générateur d’items FiveM</h1>
+  <p class="subtitle">Icônes réalistes prêtes à l’emploi</p>
 
-    <div class="row">
-      <div class="checkbox">
-        <input type="checkbox" id="transparent" checked />
-        <span>Fond transparent</span>
-      </div>
-    </div>
+  <input
+    type="text"
+    placeholder="Ex : fourchette en or, clé USB, bouteille d’eau"
+    disabled
+  >
 
-    <button onclick="generate()">Générer</button>
-
-    <div id="error">Le générateur est hors ligne contactez Atsar</div>
-
-    <div id="result"></div>
+  <div class="checkbox">
+    <input type="checkbox" checked disabled>
+    <label>Fond transparent</label>
   </div>
 
-  <script>
-    async function generate() {
-      const errorEl = document.getElementById("error");
-      const resultEl = document.getElementById("result");
-      const prompt = document.getElementById("prompt").value;
+  <button disabled>Générer</button>
 
-      errorEl.style.display = "none";
-      resultEl.innerHTML = "";
+  <div class="error">
+    Le générateur est hors ligne contactez Atsar
+  </div>
+</div>
 
-      if (!prompt.trim()) return;
-
-      try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            prompt,
-            transparent: document.getElementById("transparent").checked
-          })
-        });
-
-        if (!res.ok) throw new Error("offline");
-
-        const data = await res.json();
-
-        if (!data.image) throw new Error("offline");
-
-        resultEl.innerHTML = `<img src="${data.image}" />`;
-
-      } catch (e) {
-        errorEl.style.display = "block";
-      }
-    }
-  </script>
+<script>
+function enterApp() {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+}
+</script>
 
 </body>
 </html>
