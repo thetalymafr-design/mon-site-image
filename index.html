@@ -2,176 +2,67 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-
-  <!-- Nom de l’onglet -->
-  <title>Hurricane – FiveM Items Generator</title>
-
+  <title>Générateur By Atsar</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #1b1b1b;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: #eee;
+      background:#111;
+      color:#fff;
+      font-family:Arial;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      margin:0;
     }
-
     .box {
-      background: #262626;
-      padding: 30px;
-      border-radius: 14px;
-      width: 420px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      background:#222;
+      padding:30px;
+      border-radius:12px;
+      width:400px;
+      text-align:center;
     }
-
-    .logo {
-      width: 80px;
-      border-radius: 50%;
-      margin-bottom: 15px;
+    input, button {
+      width:100%;
+      padding:12px;
+      margin-top:10px;
+      border-radius:6px;
+      border:none;
     }
-
-    h1 {
-      margin: 0;
-      font-size: 22px;
-      color: #6cc48a;
-      font-weight: bold;
-    }
-
-    .subtitle {
-      margin-top: 6px;
-      margin-bottom: 25px;
-      font-size: 13px;
-      color: #aaa;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      box-sizing: border-box;
-    }
-
-    .option {
-      margin-top: 12px;
-      text-align: left;
-      font-size: 13px;
-    }
-
     button {
-      margin-top: 15px;
-      padding: 11px;
-      width: 100%;
-      cursor: pointer;
-      font-size: 15px;
-      border: none;
-      border-radius: 6px;
-      background: #6cc48a;
-      color: #1b1b1b;
-      font-weight: bold;
+      background:#6fcf97;
+      cursor:pointer;
+      font-weight:bold;
     }
-
-    button:hover {
-      background: #5ab078;
-    }
-
-    .image-preview {
-      margin-top: 15px;
-      display: none;
-    }
-
-    .image-preview img {
-      width: 128px;
-      height: 128px;
-      object-fit: contain;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: #777;
-      margin-top: 4px;
-    }
-
-    #result {
-      margin-top: 10px;
-      font-size: 11px;
-      color: #888;
-      white-space: pre-line;
+    img {
+      margin-top:15px;
+      max-width:100%;
     }
   </style>
 </head>
-
 <body>
 
-  <div class="box">
+<div class="box">
+  <h2>Générateur By Atsar</h2>
 
-    <!-- Logo -->
-    <img src="logo.png" class="logo" alt="Logo">
+  <input id="prompt" placeholder="fourchette" />
+  <button onclick="generateImage()">Générer</button>
 
-    <!-- TITRE PRINCIPAL -->
-    <h1>Générateur By Atsar</h1>
+  <div id="result"></div>
+</div>
 
-    <!-- SOUS-TITRE -->
-    <div class="subtitle">FiveM Items Generator</div>
+<script>
+async function generateImage() {
+  const res = await fetch("/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({})
+  });
 
-    <!-- Champ -->
-    <input
-      type="text"
-      id="prompt"
-      placeholder="Ex : fourchette en or"
-    >
-
-    <!-- Option PNG -->
-    <div class="option">
-      <label>
-        <input type="checkbox" id="noBackground" checked>
-        Image sans fond (PNG)
-      </label>
-    </div>
-
-    <!-- Bouton -->
-    <button onclick="generate()">Générer</button>
-
-    <!-- Aperçu -->
-    <div class="image-preview" id="imageBox">
-      <img id="generatedImage" src="">
-      <div class="hint">Clic droit → Copier l’image</div>
-    </div>
-
-    <div id="result"></div>
-
-  </div>
-
-  <script>
-    function generate() {
-      const prompt = document.getElementById("prompt").value.trim();
-      const noBg = document.getElementById("noBackground").checked;
-
-      if (!prompt) {
-        alert("Merci de décrire un item");
-        return;
-      }
-
-      let finalPrompt =
-        prompt +
-        ", icône d’inventaire FiveM réaliste, objet centré, vue de face";
-
-      if (noBg) {
-        finalPrompt += ", fond transparent, PNG, sans ombre";
-      }
-
-      document.getElementById("generatedImage").src =
-        "https://via.placeholder.com/256x256.png?text=ITEM";
-
-      document.getElementById("imageBox").style.display = "block";
-
-      document.getElementById("result").innerText =
-        "Prompt envoyé :\n" + finalPrompt;
-    }
-  </script>
+  const data = await res.json();
+  document.getElementById("result").innerHTML =
+    `<img src="${data.image}">`;
+}
+</script>
 
 </body>
 </html>
