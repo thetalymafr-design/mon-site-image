@@ -43,4 +43,70 @@
 
     button {
       margin-top: 15px;
-      pa
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #333;
+      white-space: pre-line;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>🖼️ Générateur d’icônes FiveM</h1>
+
+    <input
+      type="text"
+      id="prompt"
+      placeholder="Ex : fourchette en or"
+    >
+
+    <div class="option">
+      <label>
+        <input type="checkbox" id="noBackground" checked>
+        Image sans fond (PNG)
+      </label>
+    </div>
+
+    <button onclick="generate()">Générer</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function generate() {
+      const prompt = document.getElementById("prompt").value.trim();
+      const noBg = document.getElementById("noBackground").checked;
+
+      if (!prompt) {
+        alert("Merci de décrire un item 🙂");
+        return;
+      }
+
+      let finalPrompt =
+        prompt +
+        ", objet réaliste, icône d'inventaire FiveM, objet unique, centré, vue de face, photographie produit, haute qualité";
+
+      if (noBg) {
+        finalPrompt +=
+          ", fond transparent, PNG, sans ombre, sans texte, sans arrière-plan";
+      }
+
+      document.getElementById("result").innerText =
+        "Prompt FiveM envoyé à l’IA :\n\n" + finalPrompt;
+    }
+  </script>
+
+</body>
+</html>
