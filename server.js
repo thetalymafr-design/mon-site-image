@@ -4,12 +4,17 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir les fichiers statiques (HTML, CSS, JS, images)
+app.use(express.json());
 app.use(express.static(__dirname));
 
-// Page d’accueil → index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.post("/generate", (req, res) => {
+  res.json({
+    image: "/logo.png"
+  });
 });
 
 app.listen(PORT, () => {
