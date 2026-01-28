@@ -19,12 +19,12 @@
       background:#181b22;
       padding:30px;
       border-radius:12px;
-      width:420px;
+      width:440px;
       text-align:center;
     }
     img.logo {
       width:120px;
-      margin-bottom:15px;
+      margin-bottom:10px;
     }
     input, button {
       width:100%;
@@ -39,8 +39,12 @@
       color:#fff;
     }
     input::placeholder {
-      color:#ffffff;
-      opacity:0.7;
+      color:#cfcfcf;
+    }
+    .option {
+      margin-top:10px;
+      text-align:left;
+      font-size:13px;
     }
     button {
       background:#3fa9f5;
@@ -59,14 +63,21 @@
 <div class="box">
   <img src="/logo.png" class="logo">
 
-  <h2>Générateur by Atsar</h2>
+  <h2>Générateur d’items FiveM</h2>
 
   <input
     id="prompt"
-    placeholder="Notez l’item ici"
+    placeholder="Exemples : fourchette en or, clé USB, bouteille d’eau, arme factice…"
   >
 
-  <button onclick="generateImage()">Générer</button>
+  <div class="option">
+    <label>
+      <input type="checkbox" id="transparent" checked>
+      Fond transparent (icône FiveM)
+    </label>
+  </div>
+
+  <button onclick="generateImage()">Générer l’item</button>
 
   <div id="result"></div>
 </div>
@@ -74,17 +85,25 @@
 <script>
 async function generateImage() {
   const prompt = document.getElementById("prompt").value;
+  const transparent = document.getElementById("transparent").checked;
+
+  document.getElementById("result").innerHTML = "Génération en cours…";
 
   const res = await fetch("/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt })
+    body: JSON.stringify({ prompt, transparent })
   });
 
   const data = await res.json();
 
-  document.getElementById("result").innerHTML =
-    `<img src="${data.image}">`;
+  if (data.image) {
+    document.getElementById("result").innerHTML =
+      `<img src="${data.image}">`;
+  } else {
+    document.getElementById("result").innerHTML =
+      "Erreur lors de la génération";
+  }
 }
 </script>
 
