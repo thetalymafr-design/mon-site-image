@@ -4,7 +4,7 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: "5mb" }));
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 
 app.post("/generate", async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const { prompt, transparent } = req.body;
 
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
@@ -23,19 +23,20 @@ app.post("/generate", async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-image-1",
-        prompt: prompt,
+        prompt,
         size: "512x512",
-        background: "transparent"
+        background: transparent ? "transparent" : "white"
       })
     });
 
     const data = await response.json();
 
-    // OpenAI renvoie du base64 → on le convertit pour le navigateur
-    const base64Image = data.data[0].b64_json;
+    if (!data.data || !data.data[0].b64_json) {
+      return res.status(500).json({ error: "No image returned" });
+    }
 
     res.json({
-      image: `data:image/png;base64,${base64Image}`
+      image: `data:image/png;base64,${data.data[0].b64_json}`
     });
 
   } catch (err) {
