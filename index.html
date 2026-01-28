@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+
+  <!-- Titre de l’onglet du navigateur -->
   <title>HurricaneItemAtsar – FiveM Items Generator</title>
 
   <style>
@@ -32,8 +34,14 @@
     }
 
     h1 {
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       color: #6cc48a;
+    }
+
+    .subtitle {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 20px;
     }
 
     input[type="text"] {
@@ -68,18 +76,12 @@
       background: #5ab078;
     }
 
-    #result {
-      margin-top: 15px;
-      font-size: 12px;
-      color: #ccc;
-      white-space: pre-line;
-    }
-
     .image-preview {
       margin-top: 15px;
       background: #1e1e1e;
       border-radius: 8px;
       padding: 10px;
+      display: none;
     }
 
     .image-preview img {
@@ -94,22 +96,37 @@
       color: #888;
       margin-top: 5px;
     }
+
+    #result {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #ccc;
+      white-space: pre-line;
+    }
   </style>
 </head>
 
 <body>
 
   <div class="box">
+
+    <!-- Logo -->
     <img src="logo.png" class="logo" alt="Logo">
 
+    <!-- Titre du site -->
     <h1>HurricaneItemAtsar</h1>
 
+    <!-- Sous-titre -->
+    <div class="subtitle">FiveM Items Generator</div>
+
+    <!-- Champ de texte -->
     <input
       type="text"
       id="prompt"
       placeholder="Ex : fourchette en or"
     >
 
+    <!-- Option sans fond -->
     <div class="option">
       <label>
         <input type="checkbox" id="noBackground" checked>
@@ -117,14 +134,18 @@
       </label>
     </div>
 
+    <!-- Bouton -->
     <button onclick="generate()">Générer</button>
 
-    <div class="image-preview" id="imageBox" style="display:none;">
+    <!-- Aperçu image -->
+    <div class="image-preview" id="imageBox">
       <img id="generatedImage" src="">
       <div class="hint">Clic droit → Copier l’image</div>
     </div>
 
+    <!-- Texte debug -->
     <div id="result"></div>
+
   </div>
 
   <script>
@@ -146,6 +167,7 @@
           ", fond transparent, PNG, sans ombre, sans texte";
       }
 
+      // Image fictive en attendant l’IA
       document.getElementById("generatedImage").src =
         "https://via.placeholder.com/256x256.png?text=ITEM";
 
