@@ -1,44 +1,48 @@
 const express = require("express");
 const path = require("path");
-const OpenAI = require("openai");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// OpenAI client (clé dans Render → Environment)
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(__dirname));
 
-// Page principale
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Génération image IA
 app.post("/generate", async (req, res) => {
   try {
     const { prompt, transparent } = req.body;
 
-    const result = await openai.images.generate({
-      model: "gpt-image-1",
-      prompt: prompt,
-      size: "auto",
-      background: transparent ? "transparent" : "white"
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-image-1",
+        prompt: prompt,
+        size: "1024x1024",
+        background: transparent ? "transparent" : "white"
+      })
     });
 
-    const base64Image = result.data[0].b64_json;
+    const data = await response.json();
+
+    if (!data.data || !data.data[0] || !data.data[0].b64_json) {
+      console.error("OPENAI RESPONSE:", data);
+      return res.status(500).json({ error: "OpenAI returned no image" });
+    }
 
     res.json({
-      image: `data:image/png;base64,${base64Image}`
+      image: `data:image/png;base64,${data.data[0].b64_json}`
     });
 
   } catch (err) {
-    console.error("OPENAI ERROR:", err);
-    res.status(500).json({ error: "generation failed" });
+    console.error("SERVER ERROR:", err);
+    res.status(500).json({ error: "Generation failed" });
   }
 });
 
