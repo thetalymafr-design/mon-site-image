@@ -15,6 +15,7 @@
       height:100vh;
       margin:0;
     }
+
     .box {
       background:#181b22;
       padding:30px;
@@ -22,10 +23,12 @@
       width:440px;
       text-align:center;
     }
+
     img.logo {
       width:120px;
       margin-bottom:10px;
     }
+
     input, button {
       width:100%;
       padding:12px;
@@ -34,27 +37,44 @@
       border:none;
       font-size:14px;
     }
+
     input {
       background:#0f1115;
       color:#fff;
     }
+
     input::placeholder {
       color:#cfcfcf;
     }
-    .option {
-      margin-top:10px;
-      text-align:left;
-      font-size:13px;
-    }
+
     button {
       background:#3fa9f5;
       color:#fff;
       font-weight:bold;
       cursor:pointer;
     }
+
+    .option {
+      margin-top:12px;
+      text-align:left;
+    }
+
+    .checkbox-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size:13px;
+      cursor: pointer;
+    }
+
+    .checkbox-line input {
+      margin: 0;
+    }
+
     #result img {
       margin-top:15px;
       max-width:100%;
+      border-radius:6px;
     }
   </style>
 </head>
@@ -63,21 +83,21 @@
 <div class="box">
   <img src="/logo.png" class="logo">
 
-  <h2>Générateur d’items FiveM</h2>
+  <h2>Générateur d’items</h2>
 
   <input
     id="prompt"
-    placeholder="Exemples : fourchette en or, clé USB, bouteille d’eau, arme factice…"
+    placeholder="Exemples : fourchette en or, clé USB, bouteille d’eau, montre…"
   >
 
   <div class="option">
-    <label>
+    <label class="checkbox-line">
       <input type="checkbox" id="transparent" checked>
-      Fond transparent (icône FiveM)
+      <span>Fond transparent</span>
     </label>
   </div>
 
-  <button onclick="generateImage()">Générer l’item</button>
+  <button onclick="generateImage()">Générer</button>
 
   <div id="result"></div>
 </div>
