@@ -26,7 +26,7 @@ app.post("/generate", async (req, res) => {
     const result = await openai.images.generate({
       model: "gpt-image-1",
       prompt: prompt,
-      size: "512x512",
+      size: "auto",
       background: transparent ? "transparent" : "white"
     });
 
