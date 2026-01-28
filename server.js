@@ -1,41 +1,41 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// ===== MIDDLEWARE JSON =====
+// Render PORT (OBLIGATOIRE)
+const PORT = process.env.PORT || 10000;
+
+// ===== CONFIG =====
+// Mets false tant que ton compte OpenAI n’est PAS vérifié
+const GENERATOR_ENABLED = false;
+
+// ==================
+
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// ===== LOG IP =====
-app.use((req, res, next) => {
-  const ip =
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.socket.remoteAddress;
-
-  const date = new Date().toISOString().replace("T", " ").split(".")[0];
-  const log = `[${date}] IP: ${ip}\n`;
-
-  fs.appendFile("access.log", log, (err) => {
-    if (err) console.error("Log error:", err);
-  });
-
-  next();
-});
-
-// ===== PAGE PRINCIPALE =====
+// Page principale
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// ===== GENERATION (placeholder pour plus tard) =====
-app.post("/generate", (req, res) => {
-  res.status(500).json({ error: "Génération non active" });
+// Endpoint génération
+app.post("/generate", async (req, res) => {
+  if (!GENERATOR_ENABLED) {
+    return res.status(503).json({
+      error: "Le générateur est hors ligne, contactez Atsar",
+    });
+  }
+
+  // Quand ton compte sera vérifié, la génération IA viendra ici
+  // Pour l’instant on met un placeholder propre
+  res.json({
+    imageUrl: "/logo.png",
+  });
 });
 
-// ===== START =====
-app.listen(PORT, () => {
+// Lancement serveur (IMPORTANT POUR RENDER)
+app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on port", PORT);
 });
