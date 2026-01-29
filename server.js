@@ -1,61 +1,61 @@
-const express = require("express");
-const path = require("path");
-const OpenAI = require("openai");
+import express from "express";
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Middlewares
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.static("."));
 
-// Page principale
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-// Génération image IA
 app.post("/generate", async (req, res) => {
   try {
     const { prompt, transparent } = req.body;
 
-    if (!prompt || prompt.trim() === "") {
-      return res.status(400).json({ error: "Prompt manquant" });
+    if (!process.env.STABILITY_API_KEY) {
+      return res.status(500).json({ error: "STABILITY_API_KEY manquante" });
     }
 
-    const fullPrompt = `
-Icône d'inventaire FiveM ultra réaliste :
-${prompt},
-objet centré, vue de face,
-${transparent ? "fond totalement transparent" : "fond neutre sombre"},
-PNG, sans texte, sans ombre, style propre et net
-`;
+    const response = await fetch(
+      "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.STABILITY_API_KEY}`,
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          text_prompts: [
+            {
+              text: `${prompt}, realistic FiveM inventory icon, centered object, front view, ${transparent ? "transparent background" : "dark background"}, no shadow`,
+              weight: 1
+            }
+          ],
+          cfg_scale: 7,
+          height: 1024,
+          width: 1024,
+          samples: 1,
+          steps: 30
+        })
+      }
+    );
 
-    const result = await openai.images.generate({
-      model: "gpt-image-1",
-      prompt: fullPrompt,
-      size: "1024x1024", // ⚠️ taille valide uniquement
-    });
+    const data = await response.json();
 
-    const imageBase64 = result.data[0].b64_json;
+    if (!data.artifacts || !data.artifacts[0]) {
+      console.error("STABILITY ERROR:", data);
+      return res.status(500).json({ error: "Erreur génération Stability" });
+    }
 
     res.json({
-      image: `data:image/png;base64,${imageBase64}`,
+      image: `data:image/png;base64,${data.artifacts[0].base64}`
     });
+
   } catch (err) {
-    console.error("OPENAI ERROR:", err);
-    res.status(500).json({
-      error: "Le générateur est hors ligne, contactez Atsar",
-    });
+    console.error("SERVER ERROR:", err);
+    res.status(500).json({ error: "Erreur serveur" });
   }
 });
 
-// Lancement serveur
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
