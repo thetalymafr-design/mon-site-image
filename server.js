@@ -1,5 +1,4 @@
 import express from "express";
-import fetch from "node-fetch";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -8,55 +7,25 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 10000;
-const STABILITY_KEY = process.env.STABILITY_API_KEY;
 
+// ===== MIDDLEWARE =====
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// ===== PAGE PRINCIPALE =====
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// ===== GENERATION IMAGE (OFFLINE POUR L’INSTANT) =====
 app.post("/generate", async (req, res) => {
-  if (!STABILITY_KEY) {
-    return res.status(503).json({ error: "OFFLINE" });
-  }
-
-  const { prompt, transparent } = req.body;
-
-  if (!prompt) {
-    return res.status(400).json({ error: "PROMPT_REQUIRED" });
-  }
-
-  try {
-    const response = await fetch(
-      "https://api.stability.ai/v2beta/stable-image/generate/core",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${STABILITY_KEY}`,
-          Accept: "application/json"
-        },
-        body: JSON.stringify({
-          prompt: `${prompt}, objet réaliste, icône de jeu, centré, vue de face`,
-          output_format: transparent ? "png" : "webp"
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!data.image) {
-      throw new Error("NO_IMAGE");
-    }
-
-    res.json({ image: `data:image/png;base64,${data.image}` });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "GENERATION_FAILED" });
-  }
+  // Tant que OpenAI n’est pas vérifié
+  return res.status(503).json({
+    error: "Le générateur est hors ligne, contactez Atsar"
+  });
 });
 
+// ===== LANCEMENT SERVEUR =====
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
