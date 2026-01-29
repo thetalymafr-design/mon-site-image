@@ -1,188 +1,172 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Générateur d’items FiveM</title>
+  <meta charset="UTF-8" />
+  <title>Générateur d’items FiveM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-* {
-  box-sizing: border-box;
-  font-family: Inter, system-ui, sans-serif;
-}
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
 
-body {
-  margin: 0;
-  height: 100vh;
-  background: radial-gradient(circle at top, #1e293b, #020617);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #0f1c3d, #050b1d);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
 
-.hidden {
-  display: none;
-}
+    .card {
+      width: 420px;
+      background: rgba(10,20,50,0.85);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
 
-.card {
-  width: 420px;
-  background: rgba(15, 23, 42, 0.9);
-  border-radius: 20px;
-  padding: 30px;
-  text-align: center;
-  box-shadow: 0 30px 80px rgba(0,0,0,.6);
-}
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: auto;
+      border: 4px solid rgba(255,255,255,.15);
+      background: url("logo.png") center/cover no-repeat;
+    }
 
-.avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: #0f172a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  border: 3px solid #334155;
-}
+    h1 {
+      margin: 20px 0 5px;
+      font-size: 24px;
+    }
 
-.avatar img {
-  width: 70px;
-}
+    .subtitle {
+      font-size: 14px;
+      opacity: .8;
+      margin-bottom: 20px;
+    }
 
-h1 {
-  margin: 10px 0;
-}
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: #0b1633;
+      color: #fff;
+      margin-bottom: 14px;
+    }
 
-.subtitle {
-  color: #94a3b8;
-  font-size: 14px;
-  margin-bottom: 25px;
-}
+    .options {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
 
-input[type="text"] {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: none;
-  outline: none;
-  background: #020617;
-  color: white;
-  font-size: 14px;
-}
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
 
-input::placeholder {
-  color: #64748b;
-}
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      transition: transform .15s, box-shadow .15s;
+    }
 
-.checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 18px 0;
-  justify-content: center;
-}
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(59,130,246,.4);
+    }
 
-.checkbox-row input {
-  width: 18px;
-  height: 18px;
-}
+    .error {
+      margin-top: 14px;
+      color: #ff4d4d;
+      font-size: 14px;
+      display: none;
+    }
 
-button {
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 600;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  transition: transform .2s, box-shadow .2s;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(37,99,235,.4);
-}
-
-.offline {
-  color: #ef4444;
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-.home-text {
-  color: #cbd5f5;
-  font-size: 14px;
-  margin-bottom: 25px;
-}
-</style>
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 12px;
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="card">
+    <div class="avatar"></div>
 
-<!-- PAGE ACCUEIL -->
-<div class="card" id="home">
-  <div class="avatar">
-    <img src="logo.png">
+    <h1>Générateur d’items FiveM</h1>
+    <div class="subtitle">Icônes réalistes prêtes à l’emploi</div>
+
+    <input
+      id="prompt"
+      type="text"
+      placeholder="Ex : fourchette en or, clé USB, bouteille d’eau"
+    />
+
+    <div class="options">
+      <input type="checkbox" id="transparent" checked />
+      <label for="transparent">Fond transparent</label>
+    </div>
+
+    <button onclick="generate()">Générer</button>
+
+    <div class="error" id="error">
+      Le générateur est hors ligne, contactez Atsar
+    </div>
+
+    <img id="result" />
   </div>
 
-  <h1>Bienvenue</h1>
-  <p class="home-text">
-    Merci de ne pas abuser de la génération.<br>
-    Soyez précis dans vos demandes pour un meilleur rendu.
-  </p>
+  <script>
+    async function generate() {
+      const prompt = document.getElementById("prompt").value.trim();
+      const transparent = document.getElementById("transparent").checked;
+      const error = document.getElementById("error");
+      const img = document.getElementById("result");
 
-  <button onclick="enterApp()">Accéder au générateur</button>
-</div>
+      error.style.display = "none";
+      img.style.display = "none";
 
-<!-- PAGE GENERATEUR -->
-<div class="card hidden" id="app">
-  <div class="avatar">
-    <img src="logo.png">
-  </div>
+      if (!prompt) return;
 
-  <h1>Générateur d’items FiveM</h1>
-  <p class="subtitle">Icônes réalistes prêtes à l’emploi</p>
+      try {
+        const res = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, transparent })
+        });
 
-  <input type="text" id="prompt"
-    placeholder="Ex : fourchette en or, clé USB, bouteille d’eau">
+        if (!res.ok) throw new Error("offline");
 
-  <div class="checkbox-row">
-    <input type="checkbox" id="transparent" checked>
-    <label for="transparent">Fond transparent</label>
-  </div>
+        const data = await res.json();
 
-  <button id="generateBtn">Générer</button>
+        if (!data.image) throw new Error("offline");
 
-  <div class="offline hidden" id="offlineMsg">
-    Le générateur est hors ligne, contactez Atsar
-  </div>
-</div>
+        img.src = data.image;
+        img.style.display = "block";
 
-<script>
-// 🔴 METTRE false quand OpenAI sera vérifié
-const GENERATOR_OFFLINE = true;
-
-function enterApp() {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-}
-
-document.getElementById("generateBtn").addEventListener("click", () => {
-  const msg = document.getElementById("offlineMsg");
-  msg.classList.add("hidden");
-
-  if (GENERATOR_OFFLINE) {
-    msg.classList.remove("hidden");
-    return;
-  }
-
-  // Ici plus tard :
-  // appel API OpenAI
-  // affichage image
-});
-</script>
-
+      } catch (e) {
+        error.style.display = "block";
+      }
+    }
+  </script>
 </body>
 </html>
