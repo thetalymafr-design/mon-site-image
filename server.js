@@ -1,41 +1,62 @@
-const express = require("express");
-const path = require("path");
+import express from "express";
+import fetch from "node-fetch";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-
-// Render PORT (OBLIGATOIRE)
 const PORT = process.env.PORT || 10000;
-
-// ===== CONFIG =====
-// Mets false tant que ton compte OpenAI n’est PAS vérifié
-const GENERATOR_ENABLED = false;
-
-// ==================
+const STABILITY_KEY = process.env.STABILITY_API_KEY;
 
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// Page principale
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Endpoint génération
 app.post("/generate", async (req, res) => {
-  if (!GENERATOR_ENABLED) {
-    return res.status(503).json({
-      error: "Le générateur est hors ligne, contactez Atsar",
-    });
+  if (!STABILITY_KEY) {
+    return res.status(503).json({ error: "OFFLINE" });
   }
 
-  // Quand ton compte sera vérifié, la génération IA viendra ici
-  // Pour l’instant on met un placeholder propre
-  res.json({
-    imageUrl: "/logo.png",
-  });
+  const { prompt, transparent } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "PROMPT_REQUIRED" });
+  }
+
+  try {
+    const response = await fetch(
+      "https://api.stability.ai/v2beta/stable-image/generate/core",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${STABILITY_KEY}`,
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          prompt: `${prompt}, objet réaliste, icône de jeu, centré, vue de face`,
+          output_format: transparent ? "png" : "webp"
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!data.image) {
+      throw new Error("NO_IMAGE");
+    }
+
+    res.json({ image: `data:image/png;base64,${data.image}` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "GENERATION_FAILED" });
+  }
 });
 
-// Lancement serveur (IMPORTANT POUR RENDER)
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
